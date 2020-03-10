@@ -1,0 +1,25 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "canvas-sketch ./src/dev.ts --open --  --extensions=.ts -p [ tsify ]",
+    "build": "ts-node src/build.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/dat.gui": "^0.7.5",
+    "canvas": "^2.6.1",
+    "canvas-sketch": "^0.7.1",
+    "dat.gui": "^0.7.6"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.0",
+    "ts-node": "^8.6.2",
+    "tsify": "^4.0.1",
+    "typescript": "^3.7.5"
+  }
+}
