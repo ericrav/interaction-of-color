@@ -3,6 +3,7 @@ import canvasSketch, { Settings } from 'canvas-sketch';
 import fs from 'fs';
 
 import { sketch } from './sketch';
+import { performTweet } from './tweet';
 
 const size = 2048;
 
@@ -17,5 +18,13 @@ canvasSketch(sketch, settings).then(() => {
   const out = fs.createWriteStream('output.png');
   const stream = canvas.createPNGStream();
   stream.pipe(out);
-  out.on('finish', () => console.log('Done rendering'));
+  out.on('finish', () => {
+    console.log('Done rendering');
+    try {
+      performTweet();
+    } catch (e) {
+      console.error('Problem tweeting', JSON.stringify(e));
+      process.exit(1);
+    }
+  });
 });
