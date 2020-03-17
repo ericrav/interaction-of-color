@@ -1,9 +1,11 @@
 import { Sketch } from 'canvas-sketch';
 
 export const colors = [
-  '#c87272',
-  '#4a2525',
-  '#592626',
+  '#04173c',
+  '#6686d4',
+  '#3d54be',
+  '#6e205b',
+  '#0d7852',
 ];
 
 export const sketch: Sketch = () => {
@@ -13,11 +15,12 @@ export const sketch: Sketch = () => {
     context.fillStyle = colors[1];
     context.fillRect(width / 2, 0, width / 2, height);
     context.fillStyle = colors[2];
-    const w = width / 8;
-    const h = w;
-    const x = width * 0.25 - w / 2;
-    const y = (height - h) / 2;
-    context.fillRect(x, y, w, h);
-    context.fillRect(x + width * 0.5, y, w, h);
+    const h = height / 8;
+    const w = h;
+    context.fillRect(width * 0.25, height * 0.5 - h / 2, width * 0.5, h);
+    context.fillStyle = colors[3];
+    context.fillRect(width / 2, 0, w, height);
+    context.fillStyle = colors[4];
+    context.fillRect(width / 2 - w, 0, w, height);
   };
 };
