@@ -1,11 +1,11 @@
 import { Sketch } from 'canvas-sketch';
 
 export const colors = [
-  '#04173c',
-  '#6686d4',
-  '#3d54be',
-  '#6e205b',
-  '#0d7852',
+  '#ac2525',
+  '#e35b5b',
+  '#be3d3d',
+  '#7a93cf',
+  '#302b89',
 ];
 
 export const sketch: Sketch = () => {
