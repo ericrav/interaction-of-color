@@ -19,7 +19,7 @@ const color = (shade: number) => {
 const newShape = (): Shape => ({
   x: 0,
   y: 0,
-  r: Math.random() * 2,
+  r: 0,
   c: Math.random(),
   s: Math.random() * 0.2,
   d: Math.random() * 0.4,
@@ -52,6 +52,14 @@ export const sketch: Sketch = ({
         shape = newShape();
         shape.x = x;
         shape.y = y;
+      } else if (key === 'ArrowRight') {
+        shape.r = (shape.r + 0.01) % 2;
+      } else if (key === 'ArrowLeft') {
+        shape.r = (shape.r - 0.01) % 2;
+      } else if (key === 'ArrowDown') {
+        shape.s = shape.s - 0.005;
+      } else if (key === 'ArrowUp') {
+        shape.s = shape.s + 0.005;
       }
     });
     canvas.addEventListener('mousemove', setShapePos);
@@ -72,9 +80,9 @@ export const sketch: Sketch = ({
     center();
     context.translate(width * s.x, height * s.y);
     context.rotate(rotation);
-    const min = width * 0.05;
-    const w = min + (width * 0.05 * s.s)
-    const h = w * (1 + s.d);
+    const min = width * (0.05 + s.s);
+    const w = min * (1 + s.d);
+    const h = Math.min(min + width * s.s, height * 0.1);
     context.fillRect(-w * 0.5, -h * 0.5, w, h);
     context.restore();
   };
