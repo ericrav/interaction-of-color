@@ -2,16 +2,15 @@ import { createCanvas } from 'canvas';
 import canvasSketch, { Settings } from 'canvas-sketch';
 import fs from 'fs';
 
+import { dimensions } from './config';
 import { sketch } from './sketch';
 import { performTweet } from './tweet';
 
-const size = 2048;
-
-const canvas = createCanvas(size, size);
+const canvas = createCanvas(...dimensions);
 
 const settings: Settings = {
   canvas,
-  dimensions: [size, size],
+  dimensions,
 };
 
 canvasSketch(sketch, settings).then(() => {

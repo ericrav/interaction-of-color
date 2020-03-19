@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "canvas-sketch ./src/dev.ts --open --  --extensions=.ts -p [ tsify ]",
-    "build": "ts-node src/build.ts"
+    "build": "NODE_ENV='production' ts-node src/build.ts"
   },
   "keywords": [],
   "author": "",

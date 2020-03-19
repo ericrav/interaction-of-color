@@ -4,6 +4,8 @@ declare module 'canvas-sketch' {
     context: CanvasRenderingContext2D;
     width: number;
     height: number;
+    styleWidth: number;
+    styleHeight: number;
     time: number;
     deltaTime: number;
     playhead: number;

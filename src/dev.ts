@@ -2,7 +2,9 @@ import canvasSketch, { Settings } from 'canvas-sketch';
 import * as dat from 'dat.gui';
 
 // @ts-ignore
-import { sketch, colors } from './sketch.ts';
+import { dimensions } from './config.ts';
+// @ts-ignore
+import { sketch, shapes } from './sketch.ts';
 
 const copyToClipboard = (text: string) => {
   const input = document.createElement('textarea');
@@ -13,22 +15,21 @@ const copyToClipboard = (text: string) => {
   document.body.removeChild(input);
 };
 
-const addGUI = (colors: string[] = []) => {
+const addGUI = () => {
   const gui = new dat.GUI();
-  colors.forEach((_, i) => gui.addColor(colors, String(i)));
 
   const copy = () => {
-    copyToClipboard(colors.map(c => `  '${c}',`).join('\n'));
+    copyToClipboard(JSON.stringify(shapes));
   };
   gui.add({ copy }, 'copy');
   return gui;
 };
 
 const settings: Settings = {
-  dimensions: [2048, 2048],
+  dimensions,
   animate: true,
 };
 
-addGUI(colors);
+addGUI();
 
 canvasSketch(sketch, settings);
