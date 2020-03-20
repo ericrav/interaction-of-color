@@ -4,7 +4,7 @@ import * as dat from 'dat.gui';
 // @ts-ignore
 import { dimensions } from './config.ts';
 // @ts-ignore
-import { sketch, shapes } from './sketch.ts';
+import { sketch, colors } from './sketch.ts';
 
 const copyToClipboard = (text: string) => {
   const input = document.createElement('textarea');
@@ -15,11 +15,12 @@ const copyToClipboard = (text: string) => {
   document.body.removeChild(input);
 };
 
-const addGUI = () => {
+const addGUI = (colors: string[] = []) => {
   const gui = new dat.GUI();
+  colors.forEach((_, i) => gui.addColor(colors, String(i)));
 
   const copy = () => {
-    copyToClipboard(JSON.stringify(shapes));
+    copyToClipboard(colors.map(c => `  '${c}',`).join('\n'));
   };
   gui.add({ copy }, 'copy');
   return gui;
@@ -30,6 +31,6 @@ const settings: Settings = {
   animate: true,
 };
 
-addGUI();
+addGUI(colors);
 
 canvasSketch(sketch, settings);

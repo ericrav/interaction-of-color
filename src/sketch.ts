@@ -1,114 +1,45 @@
 import { Sketch } from 'canvas-sketch';
 
-interface Shape {
-  x: number;
-  y: number;
-  r: number;
-  c: number;
-  s: number;
-  d: number;
-}
+export const colors = [
+  '#c34f43',
+  '#8e1616',
+  '#A32F37',
+  '#de2616',
+  '#F73800',
+  '#b11200',
+  '#d2192a',
+  '#fc4353',
+];
 
-export const shapes: Shape[] = require('./data.json');
+export const sketch: Sketch = ({ context, width, height }) => {
 
-const color = (shade: number) => {
-  const v = Math.floor(shade * 256);
-  return `rgb(${v},${v},${v})`;
-};
+  const rotatedRect = (color: string, r: number, x: number, y: number) => {
+    context.save();
 
-const newShape = (): Shape => ({
-  x: 0,
-  y: 0,
-  r: 0,
-  c: Math.random(),
-  s: Math.random() * 0.2,
-  d: Math.random() * 0.4,
-});
+    context.translate(width * x, height * (1 - y));
+    context.rotate(Math.PI * r);
 
-export const sketch: Sketch = ({
-  canvas,
-  context,
-  width,
-  height,
-  styleWidth,
-  styleHeight,
-}) => {
-  let shape: Shape;
+    context.fillStyle = color;
+    const w = width * 0.09;
+    const h = w * 5;
+    context.fillRect(-w / 2, -h / 2, w, h);
 
-  if (process.env.NODE_ENV !== 'production') {
-    canvas.style.cursor = 'none';
-
-    shape = newShape();
-    const setShapePos = (e: MouseEvent) => {
-      const x = e.offsetX / styleWidth - 0.5;
-      const y = e.offsetY / styleHeight - 0.5;
-      shape.x = x;
-      shape.y = y;
-    };
-
-    document.addEventListener('keydown', ({ key }) => {
-      if (key === 'n') {
-        const { x, y } = shape;
-        shape = newShape();
-        shape.x = x;
-        shape.y = y;
-      } else if (key === 'ArrowRight') {
-        shape.r = (shape.r + 0.01) % 2;
-      } else if (key === 'ArrowLeft') {
-        shape.r = (shape.r - 0.01) % 2;
-      } else if (key === 'ArrowDown') {
-        shape.s = shape.s - 0.005;
-      } else if (key === 'ArrowUp') {
-        shape.s = shape.s + 0.005;
-      }
-    });
-    canvas.addEventListener('mousemove', setShapePos);
-
-    canvas.addEventListener('click', e => {
-      shapes.push(shape);
-      shape = newShape();
-      setShapePos(e);
-    });
+    context.restore();
   }
 
-  const center = () => context.translate(width * 0.5, height * 0.5);
-
-  const drawShape = (s: Shape) => {
-    context.save();
-    const rotation = Math.PI * s.r;
-    context.fillStyle = color(s.c);
-    center();
-    context.translate(width * s.x, height * s.y);
-    context.rotate(rotation);
-    const min = width * (0.05 + s.s);
-    const w = min * (1 + s.d);
-    const h = Math.min(min + width * s.s, height * 0.1);
-    context.fillRect(-w * 0.5, -h * 0.5, w, h);
-    context.restore();
-  };
-
-  const midGray = color(0.5);
-  const frame = () => {
-    context.save();
-    const s = width * 0.15;
-    context.lineWidth = s;
-    context.strokeStyle = midGray;
-    context.strokeRect(0, 0, width, height);
-
-    context.lineWidth = s / 2;
-    context.strokeRect(0, height / 2, width, 0);
-    context.strokeRect(width / 2, 0, 0, height);
-    context.restore();
-  };
+  context.fillStyle = 'white';
+  context.fillRect(0, 0, width, height);
 
   return ({ context, width, height }) => {
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, width, height);
-    shapes.forEach(drawShape);
-    if (shape) {
-      drawShape(shape);
-    }
+    rotatedRect(colors[0], 0.02, 0.2, 0.46);
+    rotatedRect(colors[1], -0.015, 0.3, 0.44);
+    rotatedRect(colors[2], 0.023, 0.36, 0.47);
+    rotatedRect(colors[4], 0.01, 0.57, 0.48);
 
-    frame();
+    rotatedRect(colors[3], -0.02, 0.45, 0.58);
+
+    rotatedRect(colors[5], 0.02, 0.64, 0.5);
+    rotatedRect(colors[6], -0.015, 0.72, 0.44);
+    rotatedRect(colors[7], -0.01, 0.8, 0.49);
   };
 };
