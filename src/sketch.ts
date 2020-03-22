@@ -1,47 +1,41 @@
 import { Sketch } from 'canvas-sketch';
 
 export const colors = [
-  '#396B24',
-  '#162a02',
-  '#64D87E',
-
-  '#22450F',
-
-  '#7a9b59',
-  '#20432F',
-  '#487D5E',
-  '#62AF7E',
+  '#fa9e6c',
+  '#e66002',
+  '#f07838',
 ];
 
 export const sketch: Sketch = ({ context, width, height }) => {
 
-  const rotatedRect = (color: string, r: number, x: number, y: number) => {
-    context.save();
-
-    context.translate(width * x, height * (1 - y));
-    context.rotate(Math.PI * r);
-
-    context.fillStyle = color;
-    const w = width * 0.09;
-    const h = w * 5;
-    context.fillRect(-w / 2, -h / 2, w, h);
-
-    context.restore();
-  }
-
-  context.fillStyle = 'white';
-  context.fillRect(0, 0, width, height);
+  const hLine = (x: number, y: number, w: number) => {
+    context.moveTo(x * width, y * height);
+    context.lineTo((x + w) * width, y * height);
+    context.stroke();
+  };
 
   return ({ context, width, height }) => {
-    rotatedRect(colors[0], -0.07, 0.2, 0.45);
-    rotatedRect(colors[1], -0.04, 0.26, 0.49);
-    rotatedRect(colors[2], -0.065, 0.33, 0.46);
+    context.fillStyle = colors[0];
+    context.fillRect(0, 0, width, height);
 
-    rotatedRect(colors[4], -0.012, 0.56, 0.45);
-    rotatedRect(colors[5], 0.025, 0.63, 0.51);
-    rotatedRect(colors[6], -0.03, 0.72, 0.44);
-    rotatedRect(colors[7], -0.02, 0.8, 0.49);
+    context.fillStyle = colors[1];
+    context.fillRect(0, 0, width / 2, height);
 
-    rotatedRect(colors[3], 0.01, 0.45, 0.55);
+    context.lineWidth = 0.008 * width;
+    context.strokeStyle = colors[2];
+
+    hLine(0.05, 0.2, 0.4);
+    hLine(0.55, 0.2, 0.4);
+
+    hLine(0.05, 0.4, 0.2);
+    hLine(0.65, 0.4, 0.3);
+
+    hLine(0.05, 0.5, 0.9);
+
+    hLine(0.05, 0.6, 0.3);
+    hLine(0.75, 0.6, 0.2);
+
+    hLine(0.05, 0.8, 0.1);
+    hLine(0.85, 0.8, 0.1);
   };
 };
