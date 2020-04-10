@@ -19,11 +19,9 @@ canvasSketch(sketch, settings).then(() => {
   stream.pipe(out);
   out.on('finish', () => {
     console.log('Done rendering');
-    try {
-      performTweet();
-    } catch (e) {
+    performTweet().catch((e) => {
       console.error('Problem tweeting', JSON.stringify(e));
       process.exit(1);
-    }
+    });
   });
 });

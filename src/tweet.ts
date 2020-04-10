@@ -12,7 +12,13 @@ const client = new Twitter({
 });
 
 const upload = async (media: Buffer): Promise<string> => {
-  const response = await client.post('media/upload', { media });
+  let response;
+  try {
+    response = await client.post('media/upload', { media });
+  } catch (e) {
+    console.error('Could not upload media');
+    throw e;
+  }
   return response.media_id_string;
 };
 
@@ -59,6 +65,7 @@ export const performTweet = async () => {
 
   const file = fs.readFileSync('./output.png');
   const mediaIds = await upload(file);
+  console.log('Uploaded media', mediaIds);
   let tweetId: string;
   try {
     tweetId = await tweet(status, mediaIds, replyTo);

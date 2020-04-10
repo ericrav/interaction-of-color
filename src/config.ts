@@ -1,1 +1,1 @@
-export const dimensions: [number, number] = [4800, 2680];
+export const dimensions: [number, number] = [3600, 4020];
