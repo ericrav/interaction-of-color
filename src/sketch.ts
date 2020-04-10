@@ -1,10 +1,10 @@
 import { Sketch } from 'canvas-sketch';
 
 export const colors = [
-  '#af3a63',
-  '#18285f',
-  '#4e346b',
-  '#933a69',
+  '#081e08',
+  '#d4e1eb',
+  '#79beb1',
+  '#1a6650',
 ];
 
 export const sketch: Sketch = ({ context, width, height }) => {
@@ -31,35 +31,22 @@ export const sketch: Sketch = ({ context, width, height }) => {
   };
 
   return ({ context, width, height }) => {
-    const h1 = height * 0.6;
-    const y2 = height * 0.75;
-    const h2 = height * 0.1;
-    const y3 = height * 0.9;
-
     // backgrounds
     context.fillStyle = colors[0];
-    context.fillRect(0, 0, width, h1);
-    context.fillRect(0, y2, width / 2, h2);
+    context.fillRect(width / 2, 0, width / 2, height);
 
     context.fillStyle = colors[1];
-    context.fillRect(0, 0, width / 2, h1);
-    context.fillRect(width / 2, y2, width / 2, h2);
-
-    context.fillStyle = colors[3];
-    context.fillRect(0, y3, width / 2, h2);
-
-    context.fillStyle = colors[2];
-    context.fillRect(width / 2, y3, width / 2, h2);
+    context.fillRect(0, 0, width / 2, height);
 
     // lines
     context.lineWidth = 0.016 * width;
 
     context.strokeStyle = colors[2];
     diagonal(0.25, 0.3, 0.5);
-    hLine(0.1, 0.8, 0.4);
+    diagonal(0.49, 0.85, 0.25);
 
     context.strokeStyle = colors[3];
     diagonal(0.75, 0.3, 0.5);
-    hLine(0.5, 0.8, 0.4);
+    diagonal(0.51, 0.85, 0.25);
   };
 };
