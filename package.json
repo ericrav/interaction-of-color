@@ -17,6 +17,7 @@
     "canvas-sketch": "^0.7.1",
     "canvas-sketch-cli": "^1.11.12",
     "dat.gui": "^0.7.6",
+    "polybooljs": "^1.2.0",
     "twitter": "^1.7.1"
   },
   "devDependencies": {

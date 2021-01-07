@@ -1,8 +1,8 @@
-import canvasSketch, { Settings } from 'canvas-sketch';
+import canvasSketch from 'canvas-sketch';
 import * as dat from 'dat.gui';
 
 // @ts-ignore
-import { dimensions } from './config.ts';
+import { settings } from './settings.ts';
 // @ts-ignore
 import { sketch, colors } from './sketch.ts';
 
@@ -26,11 +26,11 @@ const addGUI = (colors: string[] = []) => {
   return gui;
 };
 
-const settings: Settings = {
-  dimensions,
+addGUI(colors);
+
+const devSettings = {
+  ...settings,
   animate: true,
 };
 
-addGUI(colors);
-
-canvasSketch(sketch, settings);
+canvasSketch(sketch, devSettings);
