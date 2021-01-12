@@ -50,12 +50,12 @@ const circle = (x: number, y: number, r: number): Polygon => {
 }
 
 export const colors = [
-  '#062f2a',
-  '#004a3c',
-  '#085546',
-  '#106151',
-  '#17705e',
-  '#237a68',
+  '#c8755c',
+  '#be6856',
+  '#b15947',
+  '#aa4a37',
+  '#a0412d',
+  '#913926',
 ];
 
 export const sketch: Sketch = ({ context }) => {
