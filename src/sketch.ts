@@ -1,6 +1,8 @@
 import { Sketch } from 'canvas-sketch';
 import PolyBool, { Polygon } from 'polybooljs';
 
+type Point = [number, number];
+
 const intersect = (poly1: Polygon, poly2: Polygon): Polygon => (
   PolyBool.intersect({ regions: [poly1] }, { regions: [poly2] }).regions[0]
 );
@@ -15,12 +17,14 @@ const equilateralTriangle = (x: number, y: number, size: number): Polygon => {
   ];
 };
 
-const rotate = (x: number, y: number, theta: number, offset: [number, number]): [number, number] => [
+const rotate = (x: number, y: number, theta: number, offset: Point): Point => [
   (x * Math.cos(theta) - y * Math.sin(theta)) + offset[0],
   (x * Math.sin(theta) + y * Math.cos(theta)) + offset[1],
 ];
 
-const rectangle = (x: number, y: number, w: number, h: number, r = 0): Polygon => {
+const add = ([x, y]: Point, [dx, dy]: Point): Point => [x + dx, y + dy];
+
+const rectangle = (x: number, y: number, w: number, h: number, deform = 0, r = 0): Polygon => {
   const cx = x + (w / 2);
   const cy = y + (h / 2);
 
@@ -31,9 +35,9 @@ const rectangle = (x: number, y: number, w: number, h: number, r = 0): Polygon =
 
   return [
     rotate(x1, y1, r, [cx, cy]),
-    rotate(x2, y1, r, [cx, cy]),
-    rotate(x2, y2, r, [cx, cy]),
-    rotate(x1, y2, r, [cx, cy]),
+    add(rotate(x2, y1, r, [cx, cy]), [deform - (0.1 * deform), deform * (h / w)]),
+    add(rotate(x2, y2, r, [cx, cy]), [deform, deform * (h / w)]),
+    add(rotate(x1, y2, r, [cx, cy]), [deform, deform * (h / w) - (0.1 * deform)]),
   ];
 };
 
@@ -46,25 +50,12 @@ const circle = (x: number, y: number, r: number): Polygon => {
 }
 
 export const colors = [
-  '#0c245c',
-  '#679cd7',
-  '#1a7843',
-  '#369864',
-  '#4381c8',
-  '#c2c86c',
-  '#6fb19e',
-  '#b9596f',
-  '#17859d',
-  '#79779d',
-  '#c2c86c',
-  '#5a36cd',
-  '#5a6ab3',
-  '#354ec3',
-  '#bb6846',
-  '#6457c5',
-  '#51a07f',
-  '#d77a7a',
-  '#c5937e',
+  '#062f2a',
+  '#004a3c',
+  '#085546',
+  '#106151',
+  '#17705e',
+  '#237a68',
 ];
 
 export const sketch: Sketch = ({ context }) => {
@@ -77,76 +68,36 @@ export const sketch: Sketch = ({ context }) => {
     context.fill();
   };
 
+  const fill = (color: string) => context.fillStyle = color;
+
   return ({ context, width, height }) => {
-    const fill = (color: string) => context.fillStyle = color;
     fill(colors[0]);
     context.fillRect(0, 0, width, height);
 
-    {
-      // main triangles
-      const size = 0.3 * width;
-      const x1 = 0.45 * width;
-      const y1 = 0.1 * height;
-      const triangle1 = equilateralTriangle(x1, y1, size);
+    const w = 0.4 * width;
+    const h = w * 3 / 4;
+    const x = 0.58 * width - (w / 2);
+    const y = 0.67 * height - (h / 2);
 
-      const x2 = x1 + 0.1 * width;
-      const y2 = y1 + size * 0.2;
-      const triangle2 = equilateralTriangle(x2, y2, size);
+    const deform = -w / 6;
 
-      fill(colors[1]);
-      drawPolygon(triangle1);
+    const rect1 = rectangle(x, y, w, h);
+    const rect2 = rectangle(x, y, w, h, deform);
+    const rect3 = rectangle(x, y, w, h, deform * 2);
+    const rect4 = rectangle(x, y, w, h, deform * 3);
+    const rect5 = rectangle(x, y, w, h, deform * 4);
+    const rectangles = [rect1, rect2, rect3, rect4, rect5];
 
-      fill(colors[2]);
-      drawPolygon(triangle2);
+    fill(colors[1]);
+    rectangles.forEach(drawPolygon);
 
-      fill(colors[3]);
-      const overlap = intersect(triangle1, triangle2);
-      drawPolygon(overlap);
+    const colorIndex = 1;
+    for (let i = rectangles.length - 1; i >= 0; i--) {
+      const rectA = rectangles[i];
+      for (let j = i + 1; j < rectangles.length; j++) {
+        fill(colors[(j - i + colorIndex)]);
+        drawPolygon(intersect(rectA, rectangles[j]));
+      }
     }
-
-    context.scale(width, width);
-    context.translate(0, 0.78 * (height / width));
-    context.translate(0.08, 0);
-
-    let i = 3;
-    const nextColor = () => fill(colors[++i]);
-
-    const drawPair = (polygon1: Polygon, polygon2: Polygon) => {
-      nextColor();
-      drawPolygon(polygon1);
-      nextColor();
-      drawPolygon(polygon2);
-      nextColor();
-      const overlap = intersect(polygon1, polygon2);
-      drawPolygon(overlap);
-      context.translate(0.18, 0);
-    };
-
-    const s = 0.06;
-
-    drawPair(
-      circle(0.035, 0.0575, 0.0375),
-      circle(0.055, 0.035, 0.04),
-    );
-
-    drawPair(
-      equilateralTriangle(0.03, 0, 0.08),
-      circle(0.065, 0.065, 0.035),
-    );
-
-    drawPair(
-      rectangle(0, 0.0165, 0.085, 0.055),
-      rectangle(0.035, 0.02, 0.0875, 0.0575, Math.PI * 0.325),
-    );
-
-    drawPair(
-      rectangle(0, 0, s, s),
-      rectangle(s / 2, s / 2, s, s),
-    );
-
-    drawPair(
-      circle(0.035, 0.035, 0.04),
-      rectangle(0.025, 0.03, 0.08, 0.05, Math.PI * -0.095),
-    );
   };
 };
