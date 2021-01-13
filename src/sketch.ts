@@ -50,28 +50,17 @@ const circle = (x: number, y: number, r: number): Polygon => {
 }
 
 export const colors = [
-  '#633c7f',
-  '#de82a2',
-  '#d67a9e',
-  '#ce7399',
-  '#c56d95',
-  '#b6669a',
-  '#a7629f',
-  '#9d5e96',
-  '#ac6091',
-  '#93598c',
-  '#b6668a',
-  '#a05b87',
-  '#8c5585',
-  '#be6a8c',
-  '#aa5f81',
-  '#96557f',
-  '#7d4d77',
-  '#c57091',
-  '#ac6080',
-  '#a05979',
-  '#894e74',
-  '#72466d',
+  '#020d31',
+  '#20245c',
+  '#210a4d',
+  '#2c0937',
+  '#31172b',
+  '#511e55',
+  '#470c89',
+  '#6f3382',
+  '#372298',
+  '#5122c3',
+  '#9c4ce3',
 ];
 
 export const sketch: Sketch = ({ context }) => {
@@ -94,16 +83,15 @@ export const sketch: Sketch = ({ context }) => {
     const h = w * 3 / 4;
     const x = 0.58 * width - (w / 2);
     const y = 0.67 * height - (h / 2);
+    const d = w * 0.025;
 
-    const deform = -w / 9;
+    const deform = -w / 5;
 
     const rect1 = rectangle(x, y, w, h);
-    const rect2 = rectangle(x, y, w, h, deform);
-    const rect3 = rectangle(x, y, w, h, deform * 2);
-    const rect4 = rectangle(x, y, w, h, deform * 3);
-    const rect5 = rectangle(x, y, w, h, deform * 4);
-    const rect6 = rectangle(x, y, w, h, deform * 5);
-    const rectangles = [rect1, rect2, rect3, rect4, rect5, rect6];
+    const rect2 = rectangle(x - d, y - d, w, h, deform);
+    const rect3 = rectangle(x - d*2, y - d*2, w, h, deform * 2);
+    const rect4 = rectangle(x - d*3, y - d*3, w, h, deform * 3);
+    const rectangles = [rect1, rect2, rect3, rect4];
 
     let colorIndex = 1;
     rectangles.forEach(rect => {
