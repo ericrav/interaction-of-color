@@ -35,9 +35,9 @@ const rectangle = (x: number, y: number, w: number, h: number, deform = 0, r = 0
 
   return [
     rotate(x1, y1, r, [cx, cy]),
-    add(rotate(x2, y1, r, [cx, cy]), [deform - (0.1 * deform), deform * (h / w)]),
+    add(rotate(x2, y1, r, [cx, cy]), [deform + (0.05 * w), deform * (h / w)]),
     add(rotate(x2, y2, r, [cx, cy]), [deform, deform * (h / w)]),
-    add(rotate(x1, y2, r, [cx, cy]), [deform, deform * (h / w) - (0.1 * deform)]),
+    add(rotate(x1, y2, r, [cx, cy]), [deform, deform * (h / w) - (0.075 * h)]),
   ];
 };
 
@@ -50,12 +50,28 @@ const circle = (x: number, y: number, r: number): Polygon => {
 }
 
 export const colors = [
-  '#c8755c',
-  '#be6856',
-  '#b15947',
-  '#aa4a37',
-  '#a0412d',
-  '#913926',
+  '#633c7f',
+  '#de82a2',
+  '#d67a9e',
+  '#ce7399',
+  '#c56d95',
+  '#b6669a',
+  '#a7629f',
+  '#9d5e96',
+  '#ac6091',
+  '#93598c',
+  '#b6668a',
+  '#a05b87',
+  '#8c5585',
+  '#be6a8c',
+  '#aa5f81',
+  '#96557f',
+  '#7d4d77',
+  '#c57091',
+  '#ac6080',
+  '#a05979',
+  '#894e74',
+  '#72466d',
 ];
 
 export const sketch: Sketch = ({ context }) => {
@@ -79,23 +95,26 @@ export const sketch: Sketch = ({ context }) => {
     const x = 0.58 * width - (w / 2);
     const y = 0.67 * height - (h / 2);
 
-    const deform = -w / 6;
+    const deform = -w / 9;
 
     const rect1 = rectangle(x, y, w, h);
     const rect2 = rectangle(x, y, w, h, deform);
     const rect3 = rectangle(x, y, w, h, deform * 2);
     const rect4 = rectangle(x, y, w, h, deform * 3);
     const rect5 = rectangle(x, y, w, h, deform * 4);
-    const rectangles = [rect1, rect2, rect3, rect4, rect5];
+    const rect6 = rectangle(x, y, w, h, deform * 5);
+    const rectangles = [rect1, rect2, rect3, rect4, rect5, rect6];
 
-    fill(colors[1]);
-    rectangles.forEach(drawPolygon);
+    let colorIndex = 1;
+    rectangles.forEach(rect => {
+      fill(colors[colorIndex++]);
+      drawPolygon(rect);
+    });
 
-    const colorIndex = 1;
     for (let i = rectangles.length - 1; i >= 0; i--) {
       const rectA = rectangles[i];
       for (let j = i + 1; j < rectangles.length; j++) {
-        fill(colors[(j - i + colorIndex)]);
+        fill(colors[colorIndex++]);
         drawPolygon(intersect(rectA, rectangles[j]));
       }
     }
