@@ -50,18 +50,18 @@ const circle = (x: number, y: number, r: number): Polygon => {
 }
 
 export const colors = [
-  '#020d31',
-  '#20245c',
-  '#210a4d',
-  '#2c0937',
-  '#31172b',
-  '#511e55',
-  '#470c89',
-  '#6f3382',
-  '#372298',
-  '#5122c3',
-  '#9c4ce3',
-];
+  '#0d0d0d',
+  '#44A6A6',
+  '#BF7839',
+  '#BF4B21',
+  '#8C2218',
+  '#af4626',
+  '#c35f28',
+  '#bb572e',
+  '#84af95',
+  '#9b9b81',
+  '#a48176',
+] as const;
 
 export const sketch: Sketch = ({ context }) => {
   const drawPolygon = (polygon: Polygon) => {
@@ -90,7 +90,7 @@ export const sketch: Sketch = ({ context }) => {
     const rect1 = rectangle(x, y, w, h);
     const rect2 = rectangle(x - d, y - d, w, h, deform);
     const rect3 = rectangle(x - d*2, y - d*2, w, h, deform * 2);
-    const rect4 = rectangle(x - d*3, y - d*3, w, h, deform * 3);
+    const rect4 = rectangle(x - d*3.5, y - d*3.5, w, h, deform * 2.45);
     const rectangles = [rect1, rect2, rect3, rect4];
 
     let colorIndex = 1;
